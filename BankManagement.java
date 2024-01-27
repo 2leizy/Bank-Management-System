@@ -8,10 +8,6 @@ public class BankManagement {
 	public static ArrayList<Account> accounts = new ArrayList<>();
 	private final double MAINTAINING_BALANCE = 3000;
 
-	public void transfer(Account targetAccount, double amount) {
-
-	}
-
 	public void showAccounts() {
 
 		System.out.println("===== AVAILABLE ACCOUNTS =====");
@@ -124,7 +120,19 @@ public class BankManagement {
 						break;
 
 					case 5:
-
+						System.out.print("Transfer to?: ");
+						String ac = sc.nextLine();
+						boolean exists = accNumExists(ac);
+						Account acc = null;
+						if (exists) {
+							acc = validateAccount(ac);
+							System.out.print("How much would you like to transfer?: ");
+							double transAmount = sc.nextDouble();
+							transfer(acc, transAmount);
+							checkBalance(acc);
+						} else {
+							System.out.println("Account DNE");
+						}
 						break;
 
 					case 6:
@@ -169,7 +177,7 @@ public class BankManagement {
 	}
 
 	public void checkBalance(Account account) {
-		System.out.println("\nMaintaining Balance: " + account.getBalance());
+		System.out.println("\nMaintaining Balance of " + account.getAccName() + "is: " + account.getBalance());
 	}
 
 	public void deposit(Account account, Double amount) {
@@ -207,6 +215,16 @@ public class BankManagement {
 		String accountNumber = String.valueOf(randomNumber);
 		return accountNumber;
 
+	}
+
+	public void transfer(Account targetAccount, double amount) {
+
+		for (Account account : accounts) {
+			if (account.getAccNum().equals(targetAccount.getAccNum())) {
+				targetAccount.setBalance(targetAccount.getBalance() + amount);
+				System.out.println("Sucessfully transfered " + amount + "to " + targetAccount.getAccName());
+			}
+		}
 	}
 
 }
